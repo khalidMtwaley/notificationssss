@@ -125,7 +125,10 @@ class PushNotificationServices {
 
   static Future<void> init(GlobalKey<NavigatorState> navigatorKey) async {
     // Request permissions for notifications
-    await messaging.requestPermission();
+    await messaging.requestPermission(
+      // في جواها الصلاحيات اللي هتطلبها من المستخدم زي الصوت والحاجات دي
+    
+    );
 
     // Get the FCM token
     String? token = await messaging.getToken();
@@ -134,7 +137,7 @@ class PushNotificationServices {
     // Send the token to the server (if needed)
     messaging.onTokenRefresh.listen((value) => sendTokenToServer(value));
 
-    // Handle background messages
+    // Handle background messages  and killed alsooooooo
     FirebaseMessaging.onBackgroundMessage(_handleBackgroundMessage);
 
     // Handle foreground notifications
@@ -162,17 +165,24 @@ class PushNotificationServices {
   }
 
   static Future<void> _handleBackgroundMessage(RemoteMessage message) async {
+    // Initialize Firebase
+    //وبس كدا المسدج هتوصل لو عاوز تضيف حاجه او توصل ل معلومات جوا اوبجكت المسدج
+    
     await Firebase.initializeApp();
     log("Background message received: ${message.notification?.title}");
   }
 
   static void _navigateToScreen(RemoteMessage message, GlobalKey<NavigatorState> navigatorKey) {
     log("Navigating to NotificationsView...");
-    //if u wamt to access data from the notification like the data in payload coming from backenddd yastaaa
+
+    /*if u wamt to access data from the notification like the data in payload coming from backenddd 
     
-  //    final String? orderId = message.data['orderId']; // Extract 'orderId'
-  // log("Order ID: $orderId");
+     final String? orderId = message.data['orderId']; // Extract 'orderId'
+   log("Order ID: $orderId");*/
+
+
     final data = {
+      //keys here not comes from the backend (payload)it's just for example to navigate to the screen u can change it 
       'title': message.notification?.title ?? 'No Title',
       'body': message.notification?.body ?? 'No Body',
       'data': message.data,

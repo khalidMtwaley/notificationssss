@@ -165,6 +165,7 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:http/http.dart' as http;
 
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -199,8 +200,23 @@ It is used for navigation purposes, typically passing data to the NotificationsV
 
   /// Displays a basic notification with a payload
   static Future<void> showBasicNotification(RemoteMessage message) async {
+    /////////////////////////////////// show the img configration
+     final String? imageUrl = message.notification?.android?.imageUrl;
+
+    BigPictureStyleInformation? bigPictureStyleInformation;
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      final http.Response response = await http.get(Uri.parse(imageUrl));
+      bigPictureStyleInformation = BigPictureStyleInformation(
+        ByteArrayAndroidBitmap.fromBase64String(base64Encode(response.bodyBytes)),
+        largeIcon: ByteArrayAndroidBitmap.fromBase64String(base64Encode(response.bodyBytes)),
+      );
+      ///////////////////////////////////////// end of the img configration
+    }
+    
     // Prepare notification details
-    AndroidNotificationDetails androidNotificationDetails = const AndroidNotificationDetails(
+    AndroidNotificationDetails androidNotificationDetails =  AndroidNotificationDetails(
+            styleInformation: bigPictureStyleInformation,
+
       'channel_id', 
       'channel_name', 
       importance: Importance.max,
