@@ -53,6 +53,7 @@
 // //     log("Token sent to server: $token");
 // //   }
 // // }
+
 // import 'dart:developer';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -162,11 +163,22 @@ class PushNotificationServices {
         _navigateToScreen(initialMessage, navigatorKey);
       });
     }
+    
+     // Subscribe to a topic (optional)
+     //الباك اند هو ال هيقولك ع اسم التوبيك
+     
+    // await messaging.subscribeToTopic('all').then((val) => log('Subscribed to topic: all'));
+
+    // Unsubscribe from a topic (optional)
+    // لو عاوز تلغي الاشتراك من التوبيك او مثلا انت خرجت من البرنامج ومش عاوز الرسايل توصلك
+  // await messaging.unsubscribeFromTopic('all').then((val) => log('Unsubscribed from topic: all'));
+
   }
+ 
 
   static Future<void> _handleBackgroundMessage(RemoteMessage message) async {
     // Initialize Firebase
-    //وبس كدا المسدج هتوصل لو عاوز تضيف حاجه او توصل ل معلومات جوا اوبجكت المسدج
+    //وبس كدا المسدج هتوصل ...لو عاوز تضيف حاجه او توصل ل معلومات هتبقا من خلال اوبجكت المسدج
     
     await Firebase.initializeApp();
     log("Background message received: ${message.notification?.title}");
@@ -179,7 +191,6 @@ class PushNotificationServices {
     
      final String? orderId = message.data['orderId']; // Extract 'orderId'
    log("Order ID: $orderId");*/
-
 
     final data = {
       //keys here not comes from the backend (payload)it's just for example to navigate to the screen u can change it 
